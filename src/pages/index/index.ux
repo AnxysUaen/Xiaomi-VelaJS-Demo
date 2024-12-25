@@ -5,13 +5,29 @@
 </template>
 
 <script>
+import brightness from '@system.brightness'
 import C from "crypto-js"
 export default {
 	// 页面级组件的数据模型，影响传入数据的覆盖机制：private内定义的属性不允许被覆盖
 	private: {
-		QrStr: ""
+		QrStr: "",
+        // brightMode: null,
+        // brightValue: null,
 	},
 	onShow() {
+        // brightness.getMode({
+        //     success: ({ mode }) => {
+        //         this.brightMode = mode
+        //     }
+        // })
+        // brightness.getValue({
+        //     success: ({ value }) => {
+        //         this.brightValue = value
+        //     }
+        // })
+        brightness.setMode({ mode: 0 })
+        brightness.setValue({ value: 255 })
+        brightness.setKeepScreenOn({ keepScreenOn: true })
 		this.GenQr()
 	},
 	GenQr() {
