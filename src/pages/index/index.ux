@@ -59,14 +59,15 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    background-color: #fff;
 }
 text {
     text-align: center;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
     font-size: 26px;
 }
 .qr {
-    padding: 16px;
+    padding: 12px;
     color: #000;
     background-color: #fff;
 }
