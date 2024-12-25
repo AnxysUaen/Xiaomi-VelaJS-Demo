@@ -1,0 +1,55 @@
+<template>
+    <div class="page">
+        <qrcode if="{{QrStr}}" class="qr" value="{{QrStr}}" @click="GenQr"></qrcode>
+    </div>
+</template>
+
+<script>
+import C from "crypto-js"
+export default {
+	// 页面级组件的数据模型，影响传入数据的覆盖机制：private内定义的属性不允许被覆盖
+	private: {
+		QrStr: ""
+	},
+	onShow() {
+		this.GenQr()
+	},
+	GenQr() {
+        // key:    gogenius
+        // iv:     gogenius12345678
+        // userId: 7e517b80acda11eca52d92db35606443
+        // token:  86534297
+        const now     = new Date();
+        const timeArr = [
+            now.getFullYear().toString().slice(-2),
+            now.getMonth() + 1,
+            now.getDate(),
+            now.getHours(),
+            now.getMinutes(),
+            now.getSeconds()
+        ]
+        const time = timeArr.map(n => n < 10 ? '0' + n : n).join('');
+        let pubText = `01${time}007e517b80acda11eca52d92db356064438653429700000000`;
+        this.QrStr = C.AES.encrypt(
+            C.enc.Hex.parse(pubText),
+            C.SHA256("gogenius"), // 等同于 C.SHA256(C.enc.Utf8.parse("gogenius"))
+            {
+                iv: C.enc.Utf8.parse("gogenius12345678"),
+                mode: C.mode.CBC,
+                padding: C.pad.NoPadding,
+            }
+        ).toString()
+        console.log(this.QrStr);
+	}
+}
+</script>
+
+<style>
+.page {
+    padding: 16px;
+}
+.qr {
+    color: #000;
+    background-color: #fff;
+}
+</style>
